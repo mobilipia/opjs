@@ -79,5 +79,36 @@ define(['opjs/stack/util'], function (util) {
 
     });
 
+    suite('safeStringify', function () {
+
+      test('Returns an equivalent string representation', function () {
+        var complex1, complex2;
+        assert.deepEqual(JSON.parse(util.safeStringify({ b: 4 })), { b: 4 });
+        assert.deepEqual(JSON.parse(util.safeStringify([4, 5])), [4, 5]);
+        assert.equal(JSON.parse(util.safeStringify(null)), null);
+        assert.equal(JSON.parse(util.safeStringify(23)), 23);
+
+        complex1 = {
+          a: 1,
+          b: ['2', null],
+          c: {}
+        };
+        complex2 = {
+          a: 1,
+          b: ['2', null],
+          c: {}
+        };
+        assert.deepEqual(JSON.parse(util.safeStringify(complex1)), complex2);
+      });
+
+      // TODO: Implement this functionality and enable this test
+      test('Renders object keys in consistent order'/*, function () {
+        var obj = { b: 1, c: 2, a: 3 };
+        var str = '{"a":3,"b":1,"c":2}';
+
+        assert.equal(util.safeStringify(obj), str);
+      }*/);
+    });
+
   });
 });
