@@ -1,0 +1,3 @@
+[submodule "lib/cifre"]
+	path = lib/cifre
+	url = git@github.com:openpeer/cifre.git
