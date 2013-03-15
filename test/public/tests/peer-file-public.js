@@ -56,6 +56,32 @@ define(['opjs/stack/peer-file-public', 'text!/data/public-peer-file.json'],
         doc.sectionBundle[0].section.saltBundle.signature.key.domain = '@#%#@$invalid domain///';
         assert.isFalse(pfp.load(doc));
       });
+
+      test('Rejects documents without a signature algorithm', function () {
+        delete doc.sectionBundle[0].signature.algorithm;
+        assert.isFalse(pfp.load(doc));
+      });
+
+      test('Rejects documents that specify an invalid signing alorithm', function () {
+        doc.sectionBundle[0].signature.algorithm = 'This is a bogus algorithm';
+        assert.isFalse(pfp.load(doc));
+      });
+
+      test('Rejects documents without a signature key object', function () {
+        delete doc.sectionBundle[0].signature.key;
+        assert.isFalse(pfp.load(doc));
+      });
+
+      test('Rejects documents without a signature certificate', function () {
+        delete doc.sectionBundle[0].signature.key.x509Data;
+        assert.isFalse(pfp.load(doc));
+      });
+
+      test('Rejects documents with a faulty digest', function () {
+        doc.sectionBundle[0].signature.digestValue = 'a' +
+          doc.sectionBundle[0].signature.digestValue.slice(1);
+        assert.isFalse(pfp.load(doc));
+      });
     });
   });
 });
