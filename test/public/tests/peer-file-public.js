@@ -4,8 +4,15 @@ define(['opjs/stack/peer-file-public', 'text!/data/public-peer-file.json'],
   'use strict';
 
   suite('PeerFilePublic', function () {
+
+    var pfp, doc;
+
+    beforeEach(function () {
+      doc = JSON.parse(pblcJSON).peer;
+      pfp = new Pfp();
+    });
+
     suite('#load', function () {
-      var pfp, doc;
       var console$error;
 
       // Silence error reporting
@@ -15,11 +22,6 @@ define(['opjs/stack/peer-file-public', 'text!/data/public-peer-file.json'],
       });
       after(function () {
         console.error = console$error;
-      });
-
-      beforeEach(function () {
-        doc = JSON.parse(pblcJSON).peer;
-        pfp = new Pfp();
       });
 
       test('Rejects documents without a section A', function () {
@@ -81,6 +83,22 @@ define(['opjs/stack/peer-file-public', 'text!/data/public-peer-file.json'],
         doc.sectionBundle[0].signature.digestValue = 'a' +
           doc.sectionBundle[0].signature.digestValue.slice(1);
         assert.isFalse(pfp.load(doc));
+      });
+    });
+
+    suite('#getSection', function () {
+      beforeEach(function () {
+        pfp.load(doc);
+      });
+
+      test('Returns the requested section', function () {
+        assert.equal(pfp.getSection('A'), doc.sectionBundle[0]);
+        assert.equal(pfp.getSection('B'), doc.sectionBundle[1]);
+        assert.equal(pfp.getSection('C'), doc.sectionBundle[2]);
+      });
+
+      test('Returns `undefined` when section is not found', function () {
+        assert.isUndefined(pfp.getSection('D'));
       });
     });
   });
