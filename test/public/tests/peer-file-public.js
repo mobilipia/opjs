@@ -1,4 +1,4 @@
-/* global suite, test, assert, beforeEach, before, after */
+/* global suite, test, assert, setup, suiteSetup, suiteTeardown */
 define(['opjs/stack/peer-file-public', 'text!/data/public-peer-file.json'],
   function (Pfp, pblcJSON) {
   'use strict';
@@ -7,7 +7,7 @@ define(['opjs/stack/peer-file-public', 'text!/data/public-peer-file.json'],
 
     var pfp, doc;
 
-    beforeEach(function () {
+    setup(function () {
       doc = JSON.parse(pblcJSON).peer;
       pfp = new Pfp();
     });
@@ -16,11 +16,11 @@ define(['opjs/stack/peer-file-public', 'text!/data/public-peer-file.json'],
       var console$error;
 
       // Silence error reporting
-      before(function () {
+      suiteSetup(function () {
         console$error = console.error;
         console.error = function () {};
       });
-      after(function () {
+      suiteTeardown(function () {
         console.error = console$error;
       });
 
@@ -87,7 +87,7 @@ define(['opjs/stack/peer-file-public', 'text!/data/public-peer-file.json'],
     });
 
     suite('#getSection', function () {
-      beforeEach(function () {
+      setup(function () {
         pfp.load(doc);
       });
 
