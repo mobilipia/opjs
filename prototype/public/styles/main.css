@@ -43,9 +43,20 @@ body {
   display: block;
   border-bottom: solid 1px #888;
   line-height: 1.9em;
-  cursor: pointer;
   padding: 0 0.3em;
 }
+
+.contact .name {
+  float: left;
+} .contact .options {
+  float: right;
+  visibility: hidden;
+} .contact:hover .options {
+  visibility: visible;
+} .contact .option {
+  cursor: pointer;
+}
+
 .login {
   color: #eee;
   position: absolute;
